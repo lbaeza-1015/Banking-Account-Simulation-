@@ -109,7 +109,7 @@ bank_simulation/
 | Member | Role | Owns |
 |---|---|---|
 | Luis | Core OOP Model | `model/`, `interfaces/`, `exceptions/` |
-| Person B | Business Logic | `service/BankService.java`, `service/TransactionService.java`, `service/InterestService.java`, `Main.java` |
+| Abenezer | Business Logic | `service/BankService.java`, `service/TransactionService.java`, `service/InterestService.java`, `Main.java` |
 | Person C | JavaFX UI | `ui/LoginScreen.java`, `ui/CustomerDashboard.java`, `ui/AdminDashboard.java`, `ui/TransactionForm.java`, `ui/TransactionHistoryView.java` |
 
 ### Shared Data Contract
