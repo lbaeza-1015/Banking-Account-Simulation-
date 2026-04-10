@@ -1,4 +1,4 @@
-package exceptions;
+package Exceptions;
 
 public class AccountNotFoundException extends BankException {
     public AccountNotFoundException(String accountId) {
