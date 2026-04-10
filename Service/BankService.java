@@ -28,3 +28,28 @@ public class BankService {
         Customer newCustomer = new Customer(customerId, name, password);
         customers.put(customerId, newCustomer);
 
+        return newCustomer;
+    }
+
+// more methods will go here
+
+
+public Account openAccount(String customerId, AccountType accountType)
+        throws AccountNotFoundException {
+
+    Customer customer = findCustomer(customerId);
+
+    String accountId = "ACC-" + accountCounter;
+    accountCounter++;
+    Account newAccount = switch (accountType) {
+        case SAVINGS  -> new SavingsAccount(accountId, customer);
+        case CHECKING -> new CheckingAccount(accountId, customer);
+        case LOAN     -> new LoanAccount(accountId, customer);
+        case CREDIT   -> new CreditAccount(accountId, customer);
+    };
+
+    accounts.put(accountId, newAccount);
+    customer.addAccount(newAccount);
+
+    return newAccount;
+}
