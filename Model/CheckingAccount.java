@@ -7,11 +7,11 @@ package Model;
  * Fires a Notifiable alert if the balance goes negative after a withdrawal.
  * Implements Transactable and Notifiable.
  */
-import exceptions.InsufficientFundsException;
-import exceptions.InvalidAmountException;
-import exceptions.OverdraftException;
-import interfaces.Notifiable;
-import interfaces.Transactable;
+import Exceptions.InsufficientFundsException;
+import Exceptions.InvalidAmountException;
+import Exceptions.OverdraftException;
+import Interfaces.Notifiable;
+import Interfaces.Transactable;
 
 public class CheckingAccount extends Account implements Transactable, Notifiable {
     private final double overdraftLimit;

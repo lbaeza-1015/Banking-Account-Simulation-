@@ -7,12 +7,12 @@ package Model;
  * applyInterest() adds interest charges to the amount owed.
  * Implements Transactable, InterestBearing, and Notifiable.
  */
-import exceptions.CreditLimitExceededException;
-import exceptions.InvalidAmountException;
-import exceptions.InsufficientFundsException;
-import interfaces.InterestBearing;
-import interfaces.Notifiable;
-import interfaces.Transactable;
+import Exceptions.CreditLimitExceededException;
+import Exceptions.InvalidAmountException;
+import Exceptions.InsufficientFundsException;
+import Interfaces.InterestBearing;
+import Interfaces.Notifiable;
+import Interfaces.Transactable;
 
 import java.time.LocalDate;
 

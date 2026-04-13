@@ -8,10 +8,10 @@ package Model;
  * Fires an alert when the loan is fully paid off.
  * Implements Transactable and Notifiable.
  */
-import exceptions.InsufficientFundsException;
-import exceptions.InvalidAmountException;
-import interfaces.Notifiable;
-import interfaces.Transactable;
+import Exceptions.InsufficientFundsException;
+import Exceptions.InvalidAmountException;
+import Interfaces.Notifiable;
+import Interfaces.Transactable;
 
 public class LoanAccount extends Account implements Transactable, Notifiable {
     private final double principal;

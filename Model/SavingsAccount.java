@@ -7,11 +7,11 @@ package Model;
  * applyInterest() credits interest directly to the balance.
  * Implements Transactable, InterestBearing, and Notifiable.
  */
-import exceptions.InsufficientFundsException;
-import exceptions.InvalidAmountException;
-import interfaces.InterestBearing;
-import interfaces.Notifiable;
-import interfaces.Transactable;
+import Exceptions.InsufficientFundsException;
+import Exceptions.InvalidAmountException;
+import Interfaces.InterestBearing;
+import Interfaces.Notifiable;
+import Interfaces.Transactable;
 
 public class SavingsAccount extends Account implements Transactable, InterestBearing, Notifiable {
     private double interestRate;
