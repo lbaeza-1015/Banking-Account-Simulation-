@@ -12,8 +12,9 @@ import Exceptions.InsufficientFundsException;
 import Exceptions.InvalidAmountException;
 import Interfaces.Notifiable;
 import Interfaces.Transactable;
+import java.io.Serializable;
 
-public class LoanAccount extends Account implements Transactable, Notifiable {
+public class LoanAccount extends Account implements Transactable, Notifiable, Serializable {
     private final double principal;
     private double remainingBalance;
     private final double monthlyPayment;

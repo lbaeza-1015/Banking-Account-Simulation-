@@ -12,8 +12,9 @@ import Exceptions.InvalidAmountException;
 import Exceptions.OverdraftException;
 import Interfaces.Notifiable;
 import Interfaces.Transactable;
+import java.io.Serializable;
 
-public class CheckingAccount extends Account implements Transactable, Notifiable {
+public class CheckingAccount extends Account implements Transactable, Notifiable, Serializable {
     private final double overdraftLimit;
 
     private static int txCounter = 1;

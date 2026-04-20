@@ -7,10 +7,11 @@ package Model;
  * Forces all subclasses to implement getAccountType() and getSummary(),
  * since those answers differ per account type.
  */
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Account {
+public abstract class Account implements Serializable {
     protected final String accountId;
     protected double balance;
     protected final Customer owner;

@@ -12,8 +12,9 @@ import Exceptions.InvalidAmountException;
 import Interfaces.InterestBearing;
 import Interfaces.Notifiable;
 import Interfaces.Transactable;
+import java.io.Serializable;
 
-public class SavingsAccount extends Account implements Transactable, InterestBearing, Notifiable {
+public class SavingsAccount extends Account implements Transactable, InterestBearing, Notifiable, Serializable {
     private double interestRate;
     private final double minimumBalance;
 

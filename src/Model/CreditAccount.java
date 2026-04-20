@@ -13,10 +13,10 @@ import Exceptions.InsufficientFundsException;
 import Interfaces.InterestBearing;
 import Interfaces.Notifiable;
 import Interfaces.Transactable;
-
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class CreditAccount extends Account implements Transactable, InterestBearing, Notifiable {
+public class CreditAccount extends Account implements Transactable, InterestBearing, Notifiable, Serializable {
     private final double creditLimit;
     private double amountOwed;
     private final double interestRate;

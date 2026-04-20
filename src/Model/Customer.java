@@ -6,10 +6,11 @@ package Model;
  * No financial logic lives here — it is purely a data holder.
  * Person B's service layer creates and manages Customer objects.
  */
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Customer {
+public class Customer implements Serializable {
     private final String customerId;
     private String name;
     private String email;

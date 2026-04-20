@@ -6,10 +6,11 @@ package Model;
  * Stores what happened (type), how much (amount), when (timestamp), and a note.
  * Every Account keeps a List<Transaction> as its full history.
  */
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Transaction {
+public class Transaction implements Serializable {
     private final String transactionId;
     private final String accountId;
     private final TransactionType type;

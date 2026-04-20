@@ -8,6 +8,7 @@ import Model.Customer;
 import Model.LoanAccount;
 import Model.SavingsAccount;
 import Exceptions.AccountNotFoundException;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +20,9 @@ import java.util.List;
  * Handles creation, lookup, deletion, and authentication.
  * TransactionService and InterestService depend on this class to find accounts.
  */
-public class BankService {
+public class BankService implements Serializable {
+
+    private static final String DATA_FILE = "bank_data.ser";
     private final HashMap<String, Customer> customers = new HashMap<>();
     private final HashMap<String, Account>  accounts  = new HashMap<>();
     private final HashMap<String, String>   credentials = new HashMap<>(); // customerId -> password
@@ -72,7 +75,7 @@ public class BankService {
         Customer customer = findCustomer(customerId);
         String accountId = "ACC-" + accountCounter++;
         Account newAccount = switch (accountType) {
-            case SAVINGS  -> new SavingsAccount(accountId, customer, 0.0, 0.03, 100.0);
+            case SAVINGS  -> new SavingsAccount(accountId, customer, 0.0, 0.03, 0.0);
             case CHECKING -> new CheckingAccount(accountId, customer, 0.0, 200.0);
             case LOAN     -> new LoanAccount(accountId, customer, 0.0, 0.0);
             case CREDIT   -> new CreditAccount(accountId, customer, 1000.0, 0.02,
@@ -121,5 +124,31 @@ public class BankService {
         Account account = findAccount(accountId);
         account.getOwner().getAccounts().remove(account);
         accounts.remove(accountId);
+    }
+
+    // ── Persistence ──────────────────────────────────────────────────
+
+    /** Serializes the entire bank state to disk. */
+    public void save() {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(DATA_FILE))) {
+            out.writeObject(this);
+        } catch (IOException e) {
+            System.out.println("Warning: could not save data — " + e.getMessage());
+        }
+    }
+
+    /**
+     * Loads the bank state from disk if a save file exists.
+     * Returns null if no file is found (fresh start).
+     */
+    public static BankService load() {
+        File file = new File(DATA_FILE);
+        if (!file.exists()) return null;
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
+            return (BankService) in.readObject();
+        } catch (Exception e) {
+            System.out.println("Warning: could not load saved data, starting fresh — " + e.getMessage());
+            return null;
+        }
     }
 }
