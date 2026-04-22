@@ -2,68 +2,102 @@ package ui;
 
 import Model.Account;
 import Model.Customer;
-import Service.TransactionService;
-
-import java.util.List;
-import java.util.Scanner;
+import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
 
 public class CustomerDashboard {
 
-    private Customer customer;
-    private TransactionService transactionService;
+    private final Stage    stage;
+    private final Customer customer;
 
-    public CustomerDashboard(Customer customer, TransactionService transactionService) {
+    public CustomerDashboard(Stage stage, Customer customer) {
+        this.stage    = stage;
         this.customer = customer;
-        this.transactionService = transactionService;
     }
 
-    public void showMenu() {
-        Scanner scanner = new Scanner(System.in);
-        TransactionForm form = new TransactionForm(transactionService);
-        TransactionHistoryView historyView = new TransactionHistoryView(transactionService);
+    public void show() {
+        // ── Header ────────────────────────────────────────────────────
+        Label welcome = new Label("Welcome, " + customer.getName());
+        welcome.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        welcome.setTextFill(Color.WHITE);
 
-        while (true) {
-            System.out.println("\n=== CUSTOMER DASHBOARD ===");
-            System.out.println("1. View Accounts");
-            System.out.println("2. Deposit");
-            System.out.println("3. Withdraw");
-            System.out.println("4. Transfer");
-            System.out.println("5. View Transaction History");
-            System.out.println("6. Exit");
+        Button logoutBtn = new Button("Logout");
+        logoutBtn.setStyle("-fx-background-color: #c62828; -fx-text-fill: white; -fx-padding: 5 14;");
+        logoutBtn.setOnAction(e -> new LoginScreen(stage).show());
 
-            System.out.print("Choose option: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
 
-            if (choice == 1) {
-                viewAccounts();
-            } else if (choice == 2) {
-                form.deposit();
-            } else if (choice == 3) {
-                form.withdraw();
-            } else if (choice == 4) {
-                form.transfer();
-            } else if (choice == 5) {
-                historyView.showHistory();
-            } else if (choice == 6) {
-                System.out.println("Logging out...");
-                break;
-            } else {
-                System.out.println("Invalid option.");
-            }
-        }
+        HBox header = new HBox(welcome, spacer, logoutBtn);
+        header.setAlignment(Pos.CENTER_LEFT);
+        header.setPadding(new Insets(15, 20, 15, 20));
+        header.setStyle("-fx-background-color: #1a237e;");
+
+        // ── Account list ──────────────────────────────────────────────
+        Label accountsTitle = new Label("Your Accounts");
+        accountsTitle.setFont(Font.font("Arial", FontWeight.BOLD, 13));
+
+        ListView<String> accountList = new ListView<>();
+        accountList.setItems(FXCollections.observableArrayList(
+                customer.getAccounts().stream()
+                        .map(a -> String.format("%-12s  %-10s  $%.2f",
+                                a.getAccountId(),
+                                a.getAccountType(),
+                                a.getBalance()))
+                        .toList()
+        ));
+        accountList.setPrefHeight(120);
+        accountList.setStyle("-fx-font-family: 'Courier New'; -fx-font-size: 13px;");
+
+        // ── Action buttons ────────────────────────────────────────────
+        String primaryStyle = "-fx-background-color: #1a237e; -fx-text-fill: white;"
+                            + "-fx-pref-width: 120px; -fx-padding: 9 0;";
+        String secondaryStyle = "-fx-background-color: #37474f; -fx-text-fill: white;"
+                              + "-fx-pref-width: 180px; -fx-padding: 9 0;";
+
+        Button depositBtn  = new Button("Deposit");
+        Button withdrawBtn = new Button("Withdraw");
+        Button transferBtn = new Button("Transfer");
+        Button historyBtn  = new Button("Transaction History");
+
+        depositBtn.setStyle(primaryStyle);
+        withdrawBtn.setStyle(primaryStyle);
+        transferBtn.setStyle(primaryStyle);
+        historyBtn.setStyle(secondaryStyle);
+
+        TransactionForm form = new TransactionForm(stage, customer, this);
+        depositBtn.setOnAction(e  -> form.showDeposit());
+        withdrawBtn.setOnAction(e -> form.showWithdraw());
+        transferBtn.setOnAction(e -> form.showTransfer());
+        historyBtn.setOnAction(e  -> new TransactionHistoryView(stage, customer).show());
+
+        HBox actionRow = new HBox(10, depositBtn, withdrawBtn, transferBtn);
+        actionRow.setAlignment(Pos.CENTER);
+
+        HBox historyRow = new HBox(historyBtn);
+        historyRow.setAlignment(Pos.CENTER);
+
+        // ── Root ──────────────────────────────────────────────────────
+        VBox content = new VBox(14, accountsTitle, accountList, actionRow, historyRow);
+        content.setPadding(new Insets(20));
+
+        VBox root = new VBox(header, content);
+        root.setStyle("-fx-background-color: white;");
+
+        stage.setTitle("Dashboard — " + customer.getName());
+        stage.setScene(new Scene(root, 460, 360));
     }
 
-    private void viewAccounts() {
-        List<Account> accounts = customer.getAccounts();
-
-        if (accounts.isEmpty()) {
-            System.out.println("No accounts found.");
-        } else {
-            System.out.println("\nYour Accounts:");
-            for (Account account : accounts) {
-                System.out.println(account);
-            }
-        }
+    /** Called by TransactionForm after a successful operation to refresh the balance list. */
+    public void refresh() {
+        show();
     }
 }
