@@ -18,6 +18,10 @@ public class Transaction implements Serializable {
     private final LocalDateTime timestamp;
     private final String note;
 
+    /**
+     * Records a new transaction. The timestamp is set to the current date/time automatically;
+     * callers supply the ID, the account it belongs to, the type, the amount, and a short note.
+     */
     public Transaction(String transactionId, String accountId,
                        TransactionType type, double amount, String note) {
         this.transactionId = transactionId;

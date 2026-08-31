@@ -16,6 +16,7 @@ public class Customer implements Serializable {
     private String email;
     private final List<Account> accounts;
 
+    /** Creates a customer with the given ID, display name, and email address. */
     public Customer(String customerId, String name, String email) {
         this.customerId = customerId;
         this.name = name;
@@ -23,6 +24,7 @@ public class Customer implements Serializable {
         this.accounts = new ArrayList<>();
     }
 
+    /** Links an account to this customer so it appears in their account list. */
     public void addAccount(Account account) {
         accounts.add(account);
     }

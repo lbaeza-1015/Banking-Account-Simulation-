@@ -13,14 +13,22 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+/*
+ * RegisterScreen.java
+ * Displays the new-customer registration form. Collects name, email, password,
+ * and the account type(s) to open. On success, shows a confirmation dialog with
+ * the generated Customer ID and account IDs, then redirects to LoginScreen.
+ */
 public class RegisterScreen {
 
     private final Stage stage;
 
+    /** Creates a RegisterScreen that will render on the given JavaFX stage. */
     public RegisterScreen(Stage stage) {
         this.stage = stage;
     }
 
+    /** Builds and displays the registration form on the stage. */
     public void show() {
         // ── Header ────────────────────────────────────────────────────
         Label title = new Label("CREATE AN ACCOUNT");
@@ -90,6 +98,10 @@ public class RegisterScreen {
         stage.setScene(new Scene(root, 400, 460));
     }
 
+    /**
+     * Validates the form, creates the customer, opens the selected accounts, then shows
+     * a success dialog with the generated IDs. At least one account type must be checked.
+     */
     private void handleRegister(TextField nameField, TextField emailField,
                                 PasswordField pwField,
                                 CheckBox savingsBox, CheckBox checkingBox,
@@ -130,6 +142,7 @@ public class RegisterScreen {
         new LoginScreen(stage).show();
     }
 
+    /** Displays a modal information dialog with the newly created customer and account IDs. */
     private void showSuccess(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Registration Successful");

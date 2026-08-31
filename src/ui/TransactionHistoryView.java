@@ -20,6 +20,12 @@ import javafx.util.StringConverter;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/*
+ * TransactionHistoryView.java
+ * Displays a full-screen table of transactions for a selected account.
+ * The customer can switch between their accounts using a dropdown; the table
+ * refreshes automatically when the selection changes.
+ */
 public class TransactionHistoryView {
 
     private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -27,11 +33,13 @@ public class TransactionHistoryView {
     private final Stage    stage;
     private final Customer customer;
 
+    /** Creates a history view for the given customer on the provided stage. */
     public TransactionHistoryView(Stage stage, Customer customer) {
         this.stage    = stage;
         this.customer = customer;
     }
 
+    /** Builds and shows the transaction history screen, defaulting to the first account. */
     public void show() {
         // ── Header ────────────────────────────────────────────────────
         Label title = new Label("TRANSACTION HISTORY");
@@ -84,6 +92,10 @@ public class TransactionHistoryView {
         stage.setScene(new Scene(root, 580, 450));
     }
 
+    /**
+     * Constructs the TableView with four columns: Date & Time, Type, Amount, and Note.
+     * Each column uses a cell value factory that extracts the relevant field from a Transaction.
+     */
     private TableView<Transaction> buildTable() {
         TableView<Transaction> table = new TableView<>();
 
@@ -116,6 +128,7 @@ public class TransactionHistoryView {
         return table;
     }
 
+    /** Fetches the transaction list for the given account and populates the table. */
     private void loadHistory(TableView<Transaction> table, Account account) {
         try {
             List<Transaction> history = AppContext.transactionService.getHistory(account.getAccountId());

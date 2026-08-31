@@ -31,6 +31,7 @@ public class BankService implements Serializable {
 
     // ── Customer management ──────────────────────────────────────────
 
+    /** Creates a new customer, assigns a unique ID, and stores their login credential. */
     public Customer createCustomer(String name, String email, String password) {
         String customerId = "CUS-" + customerCounter++;
         Customer customer = new Customer(customerId, name, email);
@@ -39,6 +40,7 @@ public class BankService implements Serializable {
         return customer;
     }
 
+    /** Looks up a customer by ID; throws AccountNotFoundException if they don't exist. */
     public Customer findCustomer(String customerId) throws AccountNotFoundException {
         Customer customer = customers.get(customerId);
         if (customer == null) throw new AccountNotFoundException(customerId);
@@ -50,6 +52,7 @@ public class BankService implements Serializable {
         return password.equals(credentials.get(customerId));
     }
 
+    /** Returns a snapshot list of all registered customers. */
     public List<Customer> getAllCustomers() {
         return new ArrayList<>(customers.values());
     }
@@ -109,12 +112,14 @@ public class BankService implements Serializable {
         return credit;
     }
 
+    /** Looks up an account by ID; throws AccountNotFoundException if it does not exist. */
     public Account findAccount(String accountId) throws AccountNotFoundException {
         Account account = accounts.get(accountId);
         if (account == null) throw new AccountNotFoundException(accountId);
         return account;
     }
 
+    /** Returns a snapshot list of every account across all customers. */
     public List<Account> getAllAccounts() {
         return new ArrayList<>(accounts.values());
     }

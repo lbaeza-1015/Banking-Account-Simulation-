@@ -9,5 +9,6 @@ public enum TransactionType {
     DEPOSIT,
     WITHDRAWAL,
     TRANSFER,
-    INTEREST_APPLIED
+    INTEREST_APPLIED,
+    INTEREST_REMOVED
 }

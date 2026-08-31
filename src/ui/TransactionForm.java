@@ -16,12 +16,20 @@ import javafx.util.StringConverter;
 
 import java.util.List;
 
+/*
+ * TransactionForm.java
+ * Provides modal dialog forms for the three transaction operations a customer can perform:
+ * deposit, withdraw, and transfer. Each method builds a self-contained Stage dialog,
+ * calls the appropriate TransactionService method on confirmation, and refreshes the
+ * CustomerDashboard so updated balances are visible immediately.
+ */
 public class TransactionForm {
 
     private final Stage             owner;
     private final Customer          customer;
     private final CustomerDashboard dashboard;
 
+    /** Creates a form handler for the given customer, owned by the provided parent stage. */
     public TransactionForm(Stage owner, Customer customer, CustomerDashboard dashboard) {
         this.owner     = owner;
         this.customer  = customer;
@@ -30,6 +38,7 @@ public class TransactionForm {
 
     // ── Deposit ───────────────────────────────────────────────────────
 
+    /** Opens a modal dialog that lets the customer deposit money into a selected account. */
     public void showDeposit() {
         Stage dialog = makeDialog("Deposit");
 
@@ -61,6 +70,7 @@ public class TransactionForm {
 
     // ── Withdraw ──────────────────────────────────────────────────────
 
+    /** Opens a modal dialog that lets the customer withdraw money from a selected account. */
     public void showWithdraw() {
         Stage dialog = makeDialog("Withdraw");
 
@@ -92,6 +102,11 @@ public class TransactionForm {
 
     // ── Transfer ──────────────────────────────────────────────────────
 
+    /**
+     * Opens a modal dialog for transferring money between two accounts.
+     * The source account is chosen from a dropdown; the destination is entered by ID,
+     * which allows transfers to other customers' accounts.
+     */
     public void showTransfer() {
         Stage dialog = makeDialog("Transfer");
 
@@ -136,6 +151,7 @@ public class TransactionForm {
 
     // ── Helpers ───────────────────────────────────────────────────────
 
+    /** Creates a modal, non-resizable dialog window owned by the parent stage. */
     private Stage makeDialog(String title) {
         Stage dialog = new Stage();
         dialog.initModality(Modality.WINDOW_MODAL);
@@ -145,6 +161,11 @@ public class TransactionForm {
         return dialog;
     }
 
+    /**
+     * Builds a dropdown populated with the customer's accounts.
+     * Each item is displayed as "ACC-XXXX  —  TYPE  ($balance)" for quick identification.
+     * The first account is pre-selected so the user can confirm without extra clicks.
+     */
     private ComboBox<Account> buildAccountCombo() {
         List<Account> accounts = customer.getAccounts();
         ComboBox<Account> box = new ComboBox<>();
@@ -161,12 +182,14 @@ public class TransactionForm {
         return box;
     }
 
+    /** Returns a text field pre-configured for numeric dollar amounts. */
     private TextField amountInput() {
         TextField f = new TextField();
         f.setPromptText("0.00");
         return f;
     }
 
+    /** Returns a red, word-wrapping label used to show validation or exception messages. */
     private Label errorLabel() {
         Label l = new Label();
         l.setTextFill(Color.RED);
@@ -174,6 +197,7 @@ public class TransactionForm {
         return l;
     }
 
+    /** Returns a full-width primary action button styled in the app's dark-blue theme. */
     private Button confirmButton(String text) {
         Button b = new Button(text);
         b.setMaxWidth(Double.MAX_VALUE);
@@ -183,6 +207,11 @@ public class TransactionForm {
         return b;
     }
 
+    /**
+     * Parses the text field content as a double.
+     * Returns null and sets an error message if the text is not a valid number,
+     * so callers can bail out early without throwing.
+     */
     private Double parseAmount(TextField field, Label errorLabel) {
         try {
             double v = Double.parseDouble(field.getText().trim());
@@ -193,6 +222,7 @@ public class TransactionForm {
         }
     }
 
+    /** Builds a dark-blue centered header bar used at the top of each dialog. */
     private HBox makeHeader(String text) {
         Label lbl = new Label(text);
         lbl.setFont(Font.font("Arial", FontWeight.BOLD, 15));
@@ -204,6 +234,7 @@ public class TransactionForm {
         return h;
     }
 
+    /** Assembles a standard two-field form layout (header + label/field pairs + error + button). */
     private VBox buildTwoFieldForm(String headerText,
                                    String label1, Control field1,
                                    String label2, Control field2,

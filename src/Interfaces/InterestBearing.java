@@ -9,4 +9,5 @@ package Interfaces;
 public interface InterestBearing {
     double calculateInterest();
     void applyInterest();
+    void removeInterest();
 }

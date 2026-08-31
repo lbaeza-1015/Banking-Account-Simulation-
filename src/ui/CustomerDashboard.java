@@ -13,16 +13,27 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+/*
+ * CustomerDashboard.java
+ * The main screen a customer sees after logging in. Shows a live list of their accounts
+ * with current balances, and provides buttons to deposit, withdraw, transfer, and view
+ * transaction history. A Logout button returns to LoginScreen.
+ */
 public class CustomerDashboard {
 
     private final Stage    stage;
     private final Customer customer;
 
+    /** Creates a dashboard for the given customer, rendered on the provided stage. */
     public CustomerDashboard(Stage stage, Customer customer) {
         this.stage    = stage;
         this.customer = customer;
     }
 
+    /**
+     * Builds and displays the dashboard scene. Called on first load and again by refresh()
+     * after any transaction so account balances stay up to date.
+     */
     public void show() {
         // ── Header ────────────────────────────────────────────────────
         Label welcome = new Label("Welcome, " + customer.getName());
@@ -46,6 +57,7 @@ public class CustomerDashboard {
         accountsTitle.setFont(Font.font("Arial", FontWeight.BOLD, 13));
 
         ListView<String> accountList = new ListView<>();
+        // Format each account as a fixed-width string so columns align in the monospace list
         accountList.setItems(FXCollections.observableArrayList(
                 customer.getAccounts().stream()
                         .map(a -> String.format("%-12s  %-10s  $%.2f",

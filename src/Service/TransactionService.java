@@ -21,6 +21,7 @@ public class TransactionService {
     private static final double LOW_BALANCE_THRESHOLD = 100.0;
     private final BankService bank;
 
+    /** Creates the service using the shared BankService as the account registry. */
     public TransactionService(BankService bank) {
         this.bank = bank;
     }
